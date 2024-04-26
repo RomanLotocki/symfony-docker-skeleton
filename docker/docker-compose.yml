@@ -19,13 +19,13 @@ services:
       context: ./php
     ports:
       - 8080:80
-      - 8443:443
+      - 8443:443 #for https connections
     volumes:
       - ./apache/default.conf:/etc/apache2/sites-enabled/000-default.conf
       - ../:/var/www
     depends_on:
       - database
-  phpma:
+  pma:
     image: phpmyadmin/phpmyadmin
     container_name: phpmyadmin
     environment:
@@ -35,4 +35,4 @@ services:
       PMA_PASSWORD: changeMe!
       UPLOAD_LIMIT: 20M
     ports:
-      - 8899:80
+      - 8181:80
