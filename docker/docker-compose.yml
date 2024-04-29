@@ -12,16 +12,18 @@ services:
     ports:
       - '4306:3306'
     volumes:
-      - ./mysql:/var/lib/mysql
+      - db-data:/var/lib/mysql
   php:
     container_name: php
     build:
       context: ./php
     ports:
       - 8080:80
-      - 8443:443 #for https connections
+      - 8443:443 #for https connections allowed by apache ssl configuration in default-ssl.conf
     volumes:
       - ./apache/default.conf:/etc/apache2/sites-enabled/000-default.conf
+      - ./apache/default-ssl.conf:/etc/apache2/sites-enabled/000-default-ssl.conf
+      - ./etc/ssl:/etc/ssl
       - ../:/var/www
     depends_on:
       - database
@@ -36,3 +38,6 @@ services:
       UPLOAD_LIMIT: 20M
     ports:
       - 8181:80
+
+volumes:
+  db-data:
